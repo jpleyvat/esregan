@@ -1,0 +1,14 @@
+version: "1.0"
+services:
+  esrgan:
+    build: .
+    volumes:
+      - ../media/esrgan/output:/app/results
+      - ../media/esrgan/input:/app/inputs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
