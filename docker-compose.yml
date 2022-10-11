@@ -3,8 +3,8 @@ services:
   esrgan:
     build: .
     volumes:
-      - ../media/esrgan/output:/app/results
-      - ../media/esrgan/input:/app/inputs
+      - /shared/ai/media/esrgan/output:/results
+      - /shared/ai/media:/inputs
     deploy:
       resources:
         reservations:

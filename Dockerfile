@@ -9,33 +9,26 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64
  && bash ~/miniconda.sh -b -p $HOME/miniconda \
  && $HOME/miniconda/bin/conda init
 
-COPY . /app
+COPY . /root/esrgan
 
 RUN eval "$($HOME/miniconda/bin/conda shell.bash hook)" \
-  && cd /app \
+  && cd /root/esrgan \
   && conda env create -f environment.yaml \
   && conda activate esrgan
-  # && pip install numpy install basicsr install facexlib install gfpgan install opencv-python-headless Pillow tqdmk
-
-#RUN pip3 install torch torchvision \
-# RUN apt install libsm6 libxext6 libxrender-dev -y
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# RUN pip3 install -r /app/requirements.txt
-# RUN pip install numpy install basicsr install facexlib install gfpgan install opencv-python-headless Pillow tqdm
-# CMD pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
-
 # VOLUME /output
-VOLUME /app/results
-VOLUME /app/inputs
+VOLUME /results
+VOLUME /inputs
 
 ENV PYTHONUNBUFFERED=1
 
-# RUN rm -rf /app/results && ln -s /output /app/results \
-RUN cd /app \
+RUN ln -s /inputs /root/esrgan/inputs/media
+RUN ln -s /results /root/esrgan/results
+RUN cd /root/esrgan \
   && python setup.py develop
 
-WORKDIR /app
+WORKDIR /root/esrgan
 
-ENTRYPOINT ["/app/docker-bootstrap.sh"]
+ENTRYPOINT ["/root/esrgan/docker-bootstrap.sh"]
